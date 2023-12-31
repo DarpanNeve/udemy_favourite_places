@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../model/place.dart';
+import '../screen/places_detail.dart';
 
 class PlacesList extends StatelessWidget {
   const PlacesList({super.key, required this.places});
@@ -10,8 +11,11 @@ class PlacesList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (places.isEmpty) {
-      return const Center(
-        child: Text('No places added yet'),
+      return Center(
+        child: Text(
+          'No places added yet',
+          style: Theme.of(context).textTheme.titleLarge,
+        ),
       );
     }
     return ListView.builder(
@@ -20,7 +24,16 @@ class PlacesList extends StatelessWidget {
         final place = places[index];
         return Card(
           child: ListTile(
-            leading: Image.network(place.image),
+            onTap: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => PlaceDetailsScreen(place: place),
+                ),
+              );
+            },
+            leading: CircleAvatar(
+              backgroundImage: FileImage(place.image),
+            ),
             title: Text(
               place.name,
               style: Theme.of(context).textTheme.titleMedium!.copyWith(

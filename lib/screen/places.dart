@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:udemy_favourite_places/screen/add_place.dart';
 import 'package:udemy_favourite_places/widget/places_list.dart';
 
-class PlaceScreen extends StatelessWidget {
+import '../provider/user_places.dart';
+
+class PlaceScreen extends ConsumerWidget {
   const PlaceScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userPlaces = ref.watch(userPlacesProvider);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Places'),
@@ -15,15 +21,15 @@ class PlaceScreen extends StatelessWidget {
             onPressed: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const PlacesList(places: []),
+                  builder: (context) => const AddPlaceScreen(),
                 ),
               );
             },
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Places'),
+      body: Center(
+        child: PlacesList(places: userPlaces),
       ),
     );
   }
